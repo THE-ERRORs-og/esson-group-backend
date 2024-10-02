@@ -1,3 +1,4 @@
+const serverless = require("serverless-http");
 const express = require("express");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
@@ -80,6 +81,8 @@ app.post("/sendmail", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`app listening on port ${port}! \nctrl+click to open in browser : http://localhost:${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`app listening on port ${port}! \nctrl+click to open in browser : http://localhost:${port}`);
+// });
+
+export const handler = serverless(app);
