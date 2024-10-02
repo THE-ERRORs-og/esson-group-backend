@@ -15,6 +15,7 @@
   "author": "The Error\b\b\b\bRRR\bORs",
   "license": "ISC",
   "dependencies": {
+    "@netlify/functions": "github:netlify/functions",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
