@@ -31,6 +31,10 @@ const sendContactFormEmail = asyncHandler(async (req, res) => {
       );
   }
 
+  console.log("curr path : ", __dirname);
+  console.log("logo path : ", logopath);
+  console.log("img path : ", logopath + "/esson1.png");
+  
   try {
     // Construct the email body
     const mailOptions = {
