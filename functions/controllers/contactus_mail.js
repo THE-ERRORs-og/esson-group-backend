@@ -4,6 +4,11 @@ const { asyncHandler } = require("../utils/asyncHandler");
 const { recievers_mail } = require("../constants");
 const logopath = require("../asset/logo/filepath");
 
+const fs = require("fs");
+const path = require("path");
+
+const directoryPath = path.join(__dirname, "../your-directory-name");
+
 const sendContactFormEmail = asyncHandler(async (req, res) => {
   const {
     name,
@@ -34,7 +39,18 @@ const sendContactFormEmail = asyncHandler(async (req, res) => {
   console.log("curr path : ", __dirname);
   console.log("logo path : ", logopath);
   console.log("img path : ", logopath + "/esson1.png");
-  
+
+  fs.readdir(directoryPath, (err, files) => {
+    if (err) {
+      return console.log("Unable to scan directory: " + err);
+    }
+    // Log all file names
+    console.log("Files in the directory: ");
+    files.forEach((file) => {
+      console.log(file);
+    });
+  });
+
   try {
     // Construct the email body
     const mailOptions = {
