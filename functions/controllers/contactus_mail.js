@@ -2,7 +2,7 @@ const { transporter } = require("../MailingService/transporter");
 const { ApiResponse } = require("../utils/ApiResponse");
 const { asyncHandler } = require("../utils/asyncHandler");
 const { recievers_mail } = require("../constants");
-const path = require("path"); // Import path module
+const logopath = require("../asset/logo/filepath");
 
 const sendContactFormEmail = asyncHandler(async (req, res) => {
   const {
@@ -42,7 +42,7 @@ const sendContactFormEmail = asyncHandler(async (req, res) => {
           <div style="text-align: center; margin-bottom: 20px;">
             <img src="cid:logo" alt="Esson Group Logo" style="max-width: 150px;"/>
           </div>
-          <h2 style="color: #f14d43; text-align: center;">New Contact Us Form Submission</h2>
+          <h2 style="color: #fb903c; text-align: center;">New Contact Us Form Submission</h2>
           <p style="font-size: 16px; color: #333;">Dear Team,</p>
           <p style="font-size: 16px; color: #333;">
             A new query has been submitted through the contact form with the following details:
@@ -101,7 +101,7 @@ const sendContactFormEmail = asyncHandler(async (req, res) => {
       attachments: [
         {
           filename: "esson1.png", // logo file name
-          path: path.join(__dirname, "../asset/logo/esson1.png"), // Relative path to the logo
+          path: logopath + "/esson1.png", // Relative path to the logo
           cid: "logo", // use 'cid' for embedding images in email
         },
       ],
