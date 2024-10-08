@@ -2,35 +2,6 @@ const { transporter } = require("../MailingService/transporter");
 const { ApiResponse } = require("../utils/ApiResponse");
 const { asyncHandler } = require("../utils/asyncHandler");
 const { recievers_mail } = require("../constants");
-const logopath = require("../asset/logo/filepath");
-
-const fs = require("fs");
-const path = require("path");
-
-const directoryPath = path.join(__dirname, "../"); 
-
-function printAllFilesSync(dirPath, indent = "") {
-  try {
-    const files = fs.readdirSync(dirPath);
-
-    files.forEach((file, index) => {
-      const fullPath = path.join(dirPath, file);
-      const stats = fs.statSync(fullPath);
-      const isLastFile = index === files.length - 1; // Check if it's the last file in the directory
-      const connector = isLastFile ? "└── " : "├── ";
-
-      if (stats.isDirectory()) {
-        console.log(indent + connector + file);
-        // Recursively print files in the subdirectory with additional indentation
-        printAllFilesSync(fullPath, indent + (isLastFile ? "    " : "│   "));
-      } else if (stats.isFile()) {
-        console.log(indent + connector + file);
-      }
-    });
-  } catch (err) {
-    console.log("Unable to scan directory: " + err);
-  }
-}
 
 const sendContactFormEmail = asyncHandler(async (req, res) => {
   const {
@@ -59,22 +30,6 @@ const sendContactFormEmail = asyncHandler(async (req, res) => {
       );
   }
 
-  console.log("curr path : ", __dirname);
-  console.log("logo path : ", logopath);
-  console.log("img path : ", logopath + "/esson1.png");
-
-  console.log(path.basename(directoryPath)); // Print the root directory name
-  printAllFilesSync(directoryPath);
-
-  return res
-    .status(400)
-    .json(
-      new ApiResponse(
-        400,
-        {},
-        "All required fields (name, phoneNumber, email) must be provided."
-      )
-    );
 
   try {
     // Construct the email body
@@ -85,7 +40,7 @@ const sendContactFormEmail = asyncHandler(async (req, res) => {
       html: `
         <div style="font-family: Arial, sans-serif; line-height: 1.5; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px;">
           <div style="text-align: center; margin-bottom: 20px;">
-            <img src="cid:logo" alt="Esson Group Logo" style="max-width: 150px;"/>
+            <img src="https://essongroup.com/assets/esson1-gbSlxAet.png" alt="Esson Group Logo" style="max-width: 150px;"/>
           </div>
           <h2 style="color: #fb903c; text-align: center;">New Contact Us Form Submission</h2>
           <p style="font-size: 16px; color: #333;">Dear Team,</p>
@@ -100,6 +55,10 @@ const sendContactFormEmail = asyncHandler(async (req, res) => {
             <tr>
               <td style="padding: 8px; border: 1px solid #ddd;"><strong>Phone Number:</strong></td>
               <td style="padding: 8px; border: 1px solid #ddd;">${phoneNumber}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px; border: 1px solid #ddd;"><strong>Email:</strong></td>
+              <td style="padding: 8px; border: 1px solid #ddd;">${email}</td>
             </tr>
             <tr>
               <td style="padding: 8px; border: 1px solid #ddd;"><strong>City:</strong></td>
@@ -124,10 +83,6 @@ const sendContactFormEmail = asyncHandler(async (req, res) => {
               }</td>
             </tr>
             <tr>
-              <td style="padding: 8px; border: 1px solid #ddd;"><strong>Email:</strong></td>
-              <td style="padding: 8px; border: 1px solid #ddd;">${email}</td>
-            </tr>
-            <tr>
               <td style="padding: 8px; border: 1px solid #ddd;"><strong>Category:</strong></td>
               <td style="padding: 8px; border: 1px solid #ddd;">${
                 category || "N/A"
@@ -143,13 +98,6 @@ const sendContactFormEmail = asyncHandler(async (req, res) => {
           <p style="font-size: 16px; color: #333; margin-top: 20px;">Best regards,<br><strong>Esson Group</strong></p>
         </div>
       `,
-      attachments: [
-        {
-          filename: "esson1.png", // logo file name
-          path: logopath + "/esson1.png", // Relative path to the logo
-          cid: "logo", // use 'cid' for embedding images in email
-        },
-      ],
     };
 
     // Send the email
