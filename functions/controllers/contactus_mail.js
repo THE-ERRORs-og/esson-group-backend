@@ -7,7 +7,30 @@ const logopath = require("../asset/logo/filepath");
 const fs = require("fs");
 const path = require("path");
 
-const directoryPath = __dirname;
+const directoryPath = path.join(__dirname, "../"); 
+
+function printAllFilesSync(dirPath, indent = "") {
+  try {
+    const files = fs.readdirSync(dirPath);
+
+    files.forEach((file, index) => {
+      const fullPath = path.join(dirPath, file);
+      const stats = fs.statSync(fullPath);
+      const isLastFile = index === files.length - 1; // Check if it's the last file in the directory
+      const connector = isLastFile ? "└── " : "├── ";
+
+      if (stats.isDirectory()) {
+        console.log(indent + connector + file);
+        // Recursively print files in the subdirectory with additional indentation
+        printAllFilesSync(fullPath, indent + (isLastFile ? "    " : "│   "));
+      } else if (stats.isFile()) {
+        console.log(indent + connector + file);
+      }
+    });
+  } catch (err) {
+    console.log("Unable to scan directory: " + err);
+  }
+}
 
 const sendContactFormEmail = asyncHandler(async (req, res) => {
   const {
@@ -40,16 +63,18 @@ const sendContactFormEmail = asyncHandler(async (req, res) => {
   console.log("logo path : ", logopath);
   console.log("img path : ", logopath + "/esson1.png");
 
-  fs.readdir(directoryPath, (err, files) => {
-    if (err) {
-      return console.log("Unable to scan directory: " + err);
-    }
-    // Log all file names
-    console.log("Files in the directory: ");
-    files.forEach((file) => {
-      console.log(file);
-    });
-  });
+  console.log(path.basename(directoryPath)); // Print the root directory name
+  printAllFilesSync(directoryPath);
+
+  return res
+    .status(400)
+    .json(
+      new ApiResponse(
+        400,
+        {},
+        "All required fields (name, phoneNumber, email) must be provided."
+      )
+    );
 
   try {
     // Construct the email body
