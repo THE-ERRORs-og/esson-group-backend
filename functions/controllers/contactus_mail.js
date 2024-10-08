@@ -7,7 +7,7 @@ const logopath = require("../asset/logo/filepath");
 const fs = require("fs");
 const path = require("path");
 
-const directoryPath = path.join(__dirname, "../your-directory-name");
+const directoryPath = __dirname;
 
 const sendContactFormEmail = asyncHandler(async (req, res) => {
   const {
