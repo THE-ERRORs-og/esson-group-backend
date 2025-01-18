@@ -1,4 +1,8 @@
-const recievers_mail = ["12113078@nitkkr.ac.in","12114021@nitkkr.ac.in"];
+const recievers_mail = [
+  "support@essongroup.com",
+  "govindji@theerrors.in",
+  "12113078@nitkkr.ac.in",
+];
 
 
 module.exports= {recievers_mail};

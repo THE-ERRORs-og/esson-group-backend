@@ -35,7 +35,7 @@ const sendContactFormEmail = asyncHandler(async (req, res) => {
     // Construct the email body
     const mailOptions = {
       from: '"Esson Group" <support@essongroup.com>', // sender address
-      to: recievers_mail.join(","), // list of receivers
+      bcc: recievers_mail.join(","), // list of receivers
       subject: "New Contact Form Submission", // Subject line
       html: `
         <div style="font-family: Arial, sans-serif; line-height: 1.5; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px;">

@@ -1,5 +1,6 @@
 const { recievers_mail } = require("../constants");
 const { transporter } = require("../MailingService/transporter");
+const { ApiError } = require("../utils/ApiError");
 const { ApiResponse } = require("../utils/ApiResponse");
 const { asyncHandler } = require("../utils/asyncHandler");
 
